@@ -552,22 +552,23 @@ In constrast to models such as BERT, which need to be trained on millions of tok
 	\centering
 	\caption{Precision@k for author, series, and genre task using cosine similarities of different embedding models. Scores closest to upper bound are highlighted in bold.}
 	\label{tab:sim}
-	\tabcolsep=1.3pt
-	\begin{tabular}{lcccccccc}
+	\begin{tabular}{lcccccc}
 		\toprule
-		&        \multicolumn{3}{c}{Author}        &  & \multicolumn{2}{c}{Series} & & Genre\\ \cmidrule{2-4}\cmidrule{6-7}\cmidrule{9-9}
-		&      DTA      &   CGF    	 &     MGG       &   &     DTA       &   CGF   & &   MGG    \\ \midrule
-		BoW                          &     0.18   	 &   0.28   	 &     0.13      &   &     0.31      &  0.18      	 & &   0.44 \\
-		AVG W2V                      &     0.17      &   0.26   	 &     0.12      &   &     0.31      &  0.15      	 & &   0.50 \\
-		doc2vec                      &     0.21      &   0.43   	 &     0.22      &   &     0.31      &  0.18      	 & &   0.50 \\
-		BERT                         &     0.04      &   0.19   	 &     0.05      &   &     0.09      &  0.13      	 & &   0.34 \\
-		RoBERTa                      &     0.04      &   0.06    	 &     0.04      &   &     0.06      &  0.06      	 & &   0.29 \\
-		XLM                          &     0.04      &   0.11    	 &     0.05      &   &     0.07      &  0.09      	 & &   0.34 \\
-		P-SIF                        &     0.17      &   0.31    	 &     0.14      &   &     0.30      &  0.17      	 & &   0.52 \\
-		\emph{lib2vec} AVG           &     0.22      &   0.53    	 & \textbf{0.23} &   &     0.31      &  0.19      	 & &   0.55 \\
-		\emph{lib2vec} CON           & \textbf{0.23} & \textbf{0.62} &     0.20      &   & \textbf{0.32} &  0.19	  	 & &   0.79 \\
-		\emph{lib2vec} PCA           & \textbf{0.23} & 	 0.61        &     0.20      &   & 	   0.31 	 & \textbf{0.20} & &   \textbf{0.80} \\
-		Upper bound                  &     0.31      &   0.74        &     0.34      &   &     0.32      &  0.21      	 & &   1.00 \\ \bottomrule
+		&        \multicolumn{3}{c}{Author}         & \multicolumn{2}{c}{Series} & Genre\\
+		\cmidrule(lr){2-4}\cmidrule(lr){5-6}\cmidrule(lr){7-7}
+%		 \cmidrule{2-4}\cmidrule(lr){6-7}\cmidrule{9-9}
+		&      DTA      &   CGF    	 &     MGG       &     DTA       &   CGF   &   MGG    \\ \midrule
+		BoW                          &     0.18   	 &   0.28   	 &     0.13      &     0.31      &  0.18      	 &   0.44 \\
+		AVG W2V                      &     0.17      &   0.26   	 &     0.12      &     0.31      &  0.15      	 &   0.50 \\
+		doc2vec                      &     0.21      &   0.43   	 &     0.22      &     0.31      &  0.18      	 &   0.50 \\
+		BERT                         &     0.04      &   0.19   	 &     0.05      &     0.09      &  0.13      	 &   0.34 \\
+		RoBERTa                      &     0.04      &   0.06    	 &     0.04      &     0.06      &  0.06      	 &   0.29 \\
+		XLM                          &     0.04      &   0.11    	 &     0.05      &     0.07      &  0.09      	 &   0.34 \\
+		P-SIF                        &     0.17      &   0.31    	 &     0.14      &     0.30      &  0.17      	 &   0.52 \\
+		\emph{lib2vec} AVG           &     0.22      &   0.53    	 & \textbf{0.23} &     0.31      &  0.19      	 &   0.55 \\
+		\emph{lib2vec} CON           & \textbf{0.23} & \textbf{0.62} &     0.20      & \textbf{0.32} &  0.19	  	 &   0.79 \\
+		\emph{lib2vec} PCA           & \textbf{0.23} & 	 0.61        &     0.20      & 	   0.31 	 & \textbf{0.20} &   \textbf{0.80} \\
+		Upper bound                  &     0.31      &   0.74        &     0.34      &     0.32      &  0.21      	 &   1.00 \\ \bottomrule
 	\end{tabular}
 \end{table}
 
