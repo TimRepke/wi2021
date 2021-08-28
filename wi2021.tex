@@ -109,7 +109,7 @@ Many NLP tasks utilize document embeddings as machine-understandable semantic re
 However, such document embeddings are optimized for short texts, such as sentences or paragraphs.
 When faced with longer texts, these models either truncate the long text or split it sequencially into smaller chunks.
 We show that when applied to a fictional novel, these traditional document embeddings fail to capture all its facets.
-Complex information, such as time, place, atmosphere, style, plot, and content are typically not represented adequately.
+Complex information, such as time, place, atmosphere, style, and plot are typically not represented adequately.
 
 To this end, we propose \emph{lib2vec} which computes and combines multiple embedding vectors based on various facets.
 Instead of splitting the text sequencially, \emph{lib2vec} splits the text semantically based on domain-specific facets.
@@ -162,6 +162,7 @@ The results show that our approach outperforms state-of-the-art document embeddi
 \maketitle
 
 \section{Introduction}
+
 Reading is one of the main strategies to obtain new information.
 However, the availability and the amount of information are continuously growing.
 This is not only the case for news articles or user-generated content such as online comments but also for books~\citep{wu_mind_2020, roser_books_2013, fink-jensen_book_2015}.
@@ -178,7 +179,7 @@ However, full-text is one of the key characteristics of a book and should be con
 
 To this end, we propose \emph{lib2vec}\footnote{Based on the Latin word for book: liber.} which embeds subsets of words of a book individually using state-of-the-art embedding algorithms.
 These subsets, which we associate with \emph{facets}, represent different angles, views, or aspects of a book.
-In the context of novels, which is the focus of this study, possible facets of interests are the plot, where and when the plot is set, the novel's atmosphere, its content, and style.
+In the context of novels, which is the focus of this study, possible facets of interests are the plot, where and when the plot is set, the novel's atmosphere and style.
 To compute these facet embeddings, we identify words in the text corresponding to facets and construct pseudo-documents.
 Each facet embedding can be used individually for applications that need to compare aspects of a novel.
 We also examine strategies to combine facet embeddings into a single embedding vector for a novel.
@@ -188,7 +189,7 @@ Our experiments show that \emph{lib2vec} is able to significantly outperform oth
 In addition, we evaluate our embedding on genre and rating prediction of novels.
 Furthermore, we introduce the \emph{BoCo} dataset with similarities between 20 books under different aspects annotated by \numprint{81} domain experts.
 
-Our contribution can be summarized as follows:
+Our contributions are:
 (1) We present \emph{lib2vec}, a framework which computes and combines multiple embedding vectors based on various facets. Instead of splitting the text sequencially, \emph{lib2vec} splits the text semantically based on domain-specific facets.
 (2) \emph{lib2vec} provides memory and time-efficient computation of embedding vectors for long texts.
 (3) \emph{lib2vec} allows the comparison of books with respect to different facets.
@@ -282,7 +283,7 @@ Again, our approach differs, because our strategy for dealing with long document
 \begin{figure}
 	\centering
 	\includegraphics[width=0.99\linewidth]{figures/approach_overview.pdf}
-	\caption{Overview of the four main processing steps of \emph{lib2vec}.}
+	\caption{Overview of processing steps of \emph{lib2vec}.}
 	\label{fig:overview}
 \end{figure}
 
@@ -318,8 +319,8 @@ Each book in a corpus is annotated automatically, using SpaCy~\citep{honnibal202
 %While the Net extension combines these descriptors with POS-tags and named entities, the Net Only variant exclusively utilizes the semantic dictionaries.
 
 \paragraph{Facet Extraction.}
-In this step, words in a document are assigned to none, one, or multiple of the facets \textit{time}, \textit{place}, \textit{style}, \textit{atmosphere}, \textit{plot} or \textit{content}.
-Additional facets can be defined in the future if necessary.
+In this step, words in a document are assigned to none, one, or multiple of the facets \textit{location}, \textit{time}, \textit{style}, \textit{atmosphere}, or \textit{plot}.
+Additional facets can be defined based on the domain if necessary.
 %Previous annotations are used to identify and assign facet words.
 %In some cases, the actual context of a selected word may be lost. 
 %This loss of context can cause problems in context-sensitive embedding algorithms.
@@ -378,13 +379,13 @@ We utilise the basic assumption that the plot of a novel describes the actions b
 Such actions are expressed by verbs and adverbs.
 Thus, we construct the pseudo document for the plot facet based on words with these POS-tags.
 
-\paragraph{Content.}
-We use topic modelling to construct the pseudo-document for the content facet.
-Topic modelling has been shown to be useful for analyzing literary texts~\citep{uglanova_2020}.
-Due to its high computational costs, we only include this facet for the book comparison task (Section~\ref{ssec:bookComparisons}.
-We trained an LDA~\citep{blei2003latent} topic model on the input corpus and set the number of topics to 15.
-Afterwards, we use the top 100 associated words of the five most relevant topics of a book according to the inferred topic distribution.
-Given that topic modelling plays only a minor part in \emph{lib2vec} we treat it as a black box and defer further analysis to future work.
+%\paragraph{Content.}
+%We use topic modelling to construct the pseudo-document for the content facet.
+%Topic modelling has been shown to be useful for analyzing literary texts~\citep{uglanova_2020}.
+%Due to its high computational costs, we only include this facet for the book comparison task (Section~\ref{ssec:bookComparisons}.
+%We trained an LDA~\citep{blei2003latent} topic model on the input corpus and set the number of topics to 15.
+%Afterwards, we use the top 100 associated words of the five most relevant topics of a book according to the inferred topic distribution.
+%Given that topic modelling plays only a minor part in \emph{lib2vec} we treat it as a black box and defer further analysis to future work.
 
 \paragraph{Raw.}
 In addition, we also include a full-text facet containing the beginning of a book without any filtering apart from the truncation after the maximum sequence length.
@@ -398,17 +399,9 @@ For practical reasons and in order to compare our approach to other document emb
 \citet{rettig_fusing_2019} cover a number of approaches of aggregating embedding vectors for their multi-faceted word embeddings.
 The na\"ive approach to combine facet embeddings is to use the arithmetic mean (AVG) or an element-wise sum of the individual vectors.
 \citet{gittens_skip-gram_2017} have empirically shown that the summation of word and document embeddings can retain aspects of two underlying embedding vectors.
-Another approach is to simply concatenate facet embedding vectors (CONCAT).
+Another approach is to simply concatenate facet embedding vectors (CON).
 This has the advantage that facet embeddings can have a different dimensionality and the information captured by each facet is still available in the resulting vector.
-
-We propose to combine concatenation with dimensianality reduction to benefit from more encoded information while keeping the dimensionality low.
-To this end, we used principal component analysis on the concatenated vectors (PCA).
-We also experimented with other dimensionality reduction methods, such as autoencoders, but results were worse compared to the PCA.
-And PCA has the advantage, that it can be computed very efficiently.
-However, projecting previously unseen books into the low-dimensional space is not easily possible.
-Another downside of dimensionality reduction in general is that a rather large corpus is necessary to identify the latent dimensions. 
-Furthermore, the resulting embeddings cannot be used for semantic operations using facet encodings.
-In the experiments, we report results for three different combination methods: AVG, CONCAT, and PCA.
+We also experimented with other dimensionality reduction methods, such as autoencoders and concatenation followed by principal component analysis, but results were worse compared to simple AVG and CON.
 
 \section{Experimental Setup}
 
@@ -465,12 +458,12 @@ In this section we provide an overview of which datasets we use for our evaluati
 	\toprule
 	Facet &    CGF &    DTA &    MGG &   BoCo \\
 	\midrule
-	Atmosphere &  0.144 &  0.142 &  0.106 &  0.110 \\
 	Location   &  0.012 &  0.015 &  0.006 &  0.004 \\
+	Time       &  0.007 &  0.006 &  0.010 &  0.009 \\
+	Style      &  0.479 &  0.465 &  0.470 &  0.505 \\
+	Atmosphere &  0.144 &  0.142 &  0.106 &  0.110 \\
 	Plot       &  0.183 &  0.179 &  0.167 &  0.184 \\
 	Raw        &  1.000 &  1.000 &  1.000 &  1.000 \\
-	Style      &  0.479 &  0.465 &  0.470 &  0.505 \\
-	Time       &  0.007 &  0.006 &  0.010 &  0.009 \\
 	\bottomrule
 \end{tabular}
 \end{table}
@@ -480,14 +473,13 @@ The median is reported for the average number of (unique) words per book and the
 An overview of the average coverage for each facet is provided in Table~\ref{tab:facet_stats}.
 The average coverage is calculated by averaging the ratio of facet tokens and the number of total tokens per document over the corresponding corpus. 
 
-\paragraph{Corpus of German-Language Fiction (CGF).}
-The Corpus of German Fiction by~\citet{fischer_corpus_2017} consists of \numprint{3219} German prose books published between 1840 and 1930.
+\paragraph{Corpus of German-Language Fiction (CGF)} The Corpus of German Fiction by~\citet{fischer_corpus_2017} consists of \numprint{3219} German prose books published between 1840 and 1930.
 %The vast majority of books (\numprint{2735}) were written by 549 German authors, the others are translated into German as they were originally published in by 18 English, Russian, and French authors.
 For our series classification task, we identified \numprint{208} books that were part of a series or sequels.
 %To select books that belong to the same book series, we use indicator words of the title, such as \textit{Band}, (\textit{volume}) or \textit{Teil} (\textit{Part}).
 %In most cases, books in the same series have the same title but a specific series number.
 
-\paragraph{Deutsches Text Archiv (DTA).}
+\paragraph{Deutsches Text Archiv (DTA)}
 The DTA corpus contains \numprint{765} German works of belles-lettres published between the 16th and 20th century~\citep{berlin-brandenburgischen_akademie_der_wissenschaften_deutsches_2021}.
 We exclude texts published before 1800, as German language has changed significantly since then, leaving \numprint{459} texts.
 In this corpus, we were able to identify \numprint{176} books which are part of a series.
@@ -496,16 +488,16 @@ In this corpus, we were able to identify \numprint{176} books which are part of 
 %The \numprint{3458} full-texts written by \numprint{1109} authors.
 %This dataset was annotated with \numprint{35507} ratings by book readers.
 
-\paragraph{Gutenberg and Genres (MGG).}
+\paragraph{Gutenberg and Genres (MGG)}
 \citet{maharjan_multi-task_2017} created the MGG corpus consisting of \numprint{1003} full-texts of English books to evaluate success and genre prediction methods. 
 %This corpus by~\citet{maharjan_multi-task_2017} contains \numprint{1003} full-texts of English books and was built to evaluate book models within success and genre prediction tasks. 
 It contains genre information and binary labels of success based on Goodreads ratings. 
 A book is labeled successful if it has an average rating of more than 3.5 stars from at least ten people.
 
-\paragraph{Book Comparison (BoCo).}
+\paragraph{Book Comparison (BoCo)}
 This dataset consists of 20 popular English books selected from Project Gutenberg.\footnote{\url{www.gutenberg.org}}
-We conducted a survey with 81 participants who were asked to asses which two books in a triplet of books are more similar with regard to when and where they are set, as well as their atmosphere, content, plot and overall similarity. 
-In total, we were able to gather ratings on 527 triplets with an moderate annotator agreement of a Fleiss' Kappa Score of 0.55.
+We conducted a survey with 81 participants who were asked to asses which two books in a triplet of books are more similar with regard to when and where they are set, as well as their atmosphere and plot. 
+In total, we were able to gather ratings on 527 triplets with an moderate annotator agreement of a Fleiss' Kappa Score of $0.55$.
 
 \subsection{Removal of Possible Biases}
 
@@ -563,7 +555,7 @@ No pre-trained models or further hyperparameter optimization are involved to mak
 The same hyper-parameter setup is used for all baselines.
 %The default embeddings of \emph{lib2vec} truncate pseudo-documents that exceed a limit of \numprint{10000}.
 All experiments are executed on a Windows midrange machine with 16 GB RAM and 48 GB swap partition, an AMD Ryzen 5 3600 CPU with 12 cores, and no GPU.
-
+Table~\ref{tab:runtimes} shows the time each model needs for training on the various corpora.
 %\begin{table}[]
 %	\begin{tabular}{@{}lrr@{}}
 %		\toprule
@@ -588,24 +580,24 @@ All experiments are executed on a Windows midrange machine with 16 GB RAM and 48
 %Exceptions are BoW where the dimension size is set to \numprint{30000} as well as BERT, RoBERTA, and XLM where the dimension size is dependent on the model.
 %While the amount of parameters for BERT, RoBERTa, and XLM are found in the description of the Hugging Face transformer library,\footnote{\url{https://huggingface.co/transformers/v2.2.0/pretrained_models.html}} other values are calculated by $N*f*d + V*d$, where $N$ denotes the number of novels, $f$ the number of facets, $d$ the dimensions, and $V$ the vocabulary size.
 
-%\begin{table}
-%	\centering
-%	\begin{tabular}{@{}lrrrr@{}}
-%		\toprule
-%		& BoCo & DTA & MGG & CGF  \\ \midrule
-%		BoW     & 1   & 21  & 2   & 95   \\
-%		AVG W2V & 7   & 49  & 23  & 1026 \\
-%		doc2vec & 8   & 47  & 22  & 248  \\
-%		BERT    & 23  & 205 & 28  & 880  \\
-%		RoBERTa & 56  & 230 & 32  & 1014 \\
-%		XLM     & 104 & 192 & 30  & 1006 \\
-%		P-SIF   & 2   & 17  & 6   & 95   \\
-%		\emph{lib2vec} & 1   & 13  & 20  & 438 \\
-%		\bottomrule
-%	\end{tabular}
-%	\caption[]{Runtime in minutes for training the models on the respective corpus on our desktop computer.}
-%	\label{tab:runtimes}
-%\end{table}
+\begin{table}
+	\centering
+	\caption[]{Runtime in minutes for training the models on the respective corpus on our desktop computer.}
+	\label{tab:runtimes}
+	\begin{tabular}{@{}lrrrr@{}}
+		\toprule
+		& BoCo & DTA & MGG & CGF  \\ \midrule
+		BoW     & 1   & 21  & 2   & 95   \\
+		AVG W2V & 7   & 49  & 23  & 1026 \\
+		doc2vec & 8   & 47  & 22  & 248  \\
+		BERT    & 23  & 205 & 28  & 880  \\
+		RoBERTa & 56  & 230 & 32  & 1014 \\
+		XLM     & 104 & 192 & 30  & 1006 \\
+		P-SIF   & 2   & 17  & 6   & 95   \\
+		\emph{lib2vec} & 1   & 13  & 20  & 438 \\
+		\bottomrule
+	\end{tabular}
+\end{table}
 
 \section{Evaluation}
 
@@ -615,7 +607,8 @@ More details can be found in the appendix.
 For all experiments, we only use the documents of each corpus to train the doc2vec embedding for each facet for our approach.
 In constrast to models such as BERT, which need to be trained on millions of tokens, \emph{lib2vec} achieves very good results with only a fraction of training data.
 
-\subsection{Book Similarities}
+\subsection{Book Similarity}
+
 %\begin{table*}
 %	\centering
 %	\begin{tabular}{l|ccccc|ccc|c} % TODO fix the bold results
@@ -645,9 +638,10 @@ In constrast to models such as BERT, which need to be trained on millions of tok
 %	\caption[Author and Series Task Results of Baselines and lib2vec Variants]{Author (A) and Series (S) Task NDCG scores of baseline and different combination variants of lib2vec with strict specific word filter on different corpora and short (Sh), medium (M) and large (L) length specific sub-corpora. The highest values for each task and dataset are highlighted in bold.}
 %	\label{tab:ndcg_multi}
 %\end{table*}
-\begin{table}
+
+\begin{table}[b]
 	\centering
-	\caption{Precision@k for author, series, and genre task using cosine similarities of different embedding models. Scores closest to upper bound are highlighted in bold.}
+	\caption{Book Similarity: Precision@k for author, series, and genre task using cosine similarities of different embedding models. Scores closest to upper bound are highlighted in bold.}
 	\label{tab:sim}
 	\begin{tabular}{lcccccc}
 		\toprule
@@ -662,9 +656,9 @@ In constrast to models such as BERT, which need to be trained on millions of tok
 		RoBERTa                      &     0.04      &   0.06    	 &     0.04      &     0.06      &  0.06      	 &   0.29 \\
 		XLM                          &     0.04      &   0.11    	 &     0.05      &     0.07      &  0.09      	 &   0.34 \\
 		P-SIF                        &     0.17      &   0.31    	 &     0.14      &     0.30      &  0.17      	 &   0.52 \\
-		\emph{lib2vec} AVG           &     0.22      &   0.53    	 & \textbf{0.23} &     0.31      &  0.19      	 &   0.55 \\
-		\emph{lib2vec} CON           & \textbf{0.23} & \textbf{0.62} &     0.20      & \textbf{0.32} &  0.19	  	 &   0.79 \\
-		\emph{lib2vec} PCA           & \textbf{0.23} & 	 0.61        &     0.20      & 	   0.31 	 & \textbf{0.20} &   \textbf{0.80} \\
+		\emph{lib2vec} AVG           &     0.22      &   0.53    	 & \textbf{0.23} &     0.31      &  \textbf{0.19}&   0.55 \\
+		\emph{lib2vec} CON           & \textbf{0.23} & \textbf{0.62} &     0.20      & \textbf{0.32} &  \textbf{0.19}	 &   \textbf{0.79} \\
+%		\emph{lib2vec} PCA           & \textbf{0.23} & 	 0.61        &     0.20      & 	   0.31 	 & \textbf{0.20} &   \textbf{0.80} \\
 		Upper bound                  &     0.31      &   0.74        &     0.34      &     0.32      &  0.21      	 &   1.00 \\ \bottomrule
 	\end{tabular}
 \end{table}
@@ -696,33 +690,52 @@ Given that we do not have 10 positive examples for all tasks and classes, we als
 Our \emph{lib2vec} embedding consistently performs best and significantly outperforms state-of-the-art embeddings as well as traditional vector representations.
 For the genre classification task, we use the MGG corpus (the others don't contain genre annotations).
 
-\subsection{Book Comparisons}\label{ssec:bookComparisons}
+\subsection{Book Comparison}\label{ssec:bookComparisons}
 
-\begin{table*}
+\begin{table}[tb]
 	\centering
-	\caption[Precision of Baselines and \emph{lib2vec} on {BoCo}]{Precision of baselines and \emph{lib2vec} on the {BoCo} dataset. 
-		Words that only occur in three or fewer documents are removed (strict specific word filter).
-		The performance within the specific similarity types is expressed as the ratio of correctly predicted most similar neighbors and all triplets for different algorithm configurations. Micro AVG represents the ratio of all correct predictions and all assessments.
-		The other similarity types refer to their respective facets.}
+	\caption{Book Comparison: Precision of baselines and \emph{lib2vec} on the {BoCo} dataset containing human judgements.} 
 	\label{tab:book_comparison_baselines_strict}
-	\begin{tabular}{lccccccc}
+	\begin{tabular}{lccccc}
 		\toprule
-		Algorithm          &     Total     &     Time      &   Location    &     Plot      &  Atmosphere   &    Content    &   Micro AVG   \\ \midrule
-		BoW                &     0.46      &     0.46      &     0.49      &     0.46      &     0.48      &     0.48      &     0.47      \\
-		AVG W2V            &     0.47      &     0.59      &     0.46      &     0.46      &     0.42      &     0.41      &     0.46      \\
-		BERT               & \textbf{0.63} &     0.57      & \textbf{0.55} &     0.57      & \textbf{0.58} & \textbf{0.57} &     0.58      \\
-		RoBERTa            &     0.50      &     0.39      &     0.45      &     0.49      &     0.50      &     0.52      &     0.48      \\
-		XLM                &     0.40      &     0.36      &     0.43      &     0.47      &     0.41      &     0.43      &     0.42      \\
-		P-SIF              &     0.35      &     0.42      &     0.41      &     0.38      &     0.37      &     0.39      &     0.39      \\
-		\emph{lib2vec} AVG &     0.62      & \textbf{0.64} &     0.54      & \textbf{0.59} & \textbf{0.58} &     0.55      & \textbf{0.59} \\
-		\emph{lib2vec} CON &     0.47      &     0.49      &     0.46      &     0.38      &     0.40      &     0.48      &     0.46      \\
-		\emph{lib2vec} PCA &     0.57      &     0.55      &     0.49      &     0.47      &     0.52      &     0.51      &     0.52      \\ \bottomrule
+		Algorithm          &   Location    &     Time      &     Plot      &  Atmosphere   &    AVG   \\ \midrule
+		BoW                &     0.49      &     0.46      &     0.46      &     0.48      &    0.47  \\
+		AVG W2V            &     0.46      &     0.59      &     0.46      &     0.42      &    0.47  \\
+		BERT               & \textbf{0.55} &     0.57      &     0.57      & \textbf{0.58} &    0.57  \\
+		RoBERTa            &     0.45      &     0.39      &     0.49      &     0.50      &    0.47  \\
+		XLM                &     0.43      &     0.36      &     0.47      &     0.41      &    0.42  \\
+		P-SIF              &     0.41      &     0.42      &     0.38      &     0.37      &    0.39  \\
+		\emph{lib2vec} AVG &     0.54      & \textbf{0.64} & \textbf{0.59} & \textbf{0.58} & \textbf{0.58} \\
+		\emph{lib2vec} CON &     0.46      &     0.49      &     0.38      &     0.40      &    0.44   \\ \bottomrule
 	\end{tabular}
-\end{table*}
+\end{table}
+
+%\begin{table*}
+%	\centering
+%	\caption{Book Comparisons: Precision of baselines and \emph{lib2vec} on the {BoCo} dataset. 
+%		Words that only occur in three or fewer documents are removed (strict specific word filter).
+%		The performance within the specific similarity types is expressed as the ratio of correctly predicted most similar neighbors and all triplets for different algorithm configurations. Micro AVG represents the ratio of all correct predictions and all assessments.
+%		The other similarity types refer to their respective facets.
+%	}
+%	\label{tab:book_comparison_baselines_strict}
+%	\begin{tabular}{lccccccc}
+%		\toprule
+%		Algorithm          &     Total     &     Time      &   Location    &     Plot      &  Atmosphere   &    Content    &   Micro AVG   \\ \midrule
+%		BoW                &     0.46      &     0.46      &     0.49      &     0.46      &     0.48      &     0.48      &     0.47      \\
+%		AVG W2V            &     0.47      &     0.59      &     0.46      &     0.46      &     0.42      &     0.41      &     0.46      \\
+%		BERT               & \textbf{0.63} &     0.57      & \textbf{0.55} &     0.57      & \textbf{0.58} & \textbf{0.57} &     0.58      \\
+%		RoBERTa            &     0.50      &     0.39      &     0.45      &     0.49      &     0.50      &     0.52      &     0.48      \\
+%		XLM                &     0.40      &     0.36      &     0.43      &     0.47      &     0.41      &     0.43      &     0.42      \\
+%		P-SIF              &     0.35      &     0.42      &     0.41      &     0.38      &     0.37      &     0.39      &     0.39      \\
+%		\emph{lib2vec} AVG &     0.62      & \textbf{0.64} &     0.54      & \textbf{0.59} & \textbf{0.58} &     0.55      & \textbf{0.59} \\
+%		\emph{lib2vec} CON &     0.47      &     0.49      &     0.46      &     0.38      &     0.40      &     0.48      &     0.46      \\
+%%		\emph{lib2vec} PCA &     0.57      &     0.55      &     0.49      &     0.47      &     0.52      &     0.51      &     0.52      \\ \bottomrule
+%	\end{tabular}
+%\end{table*}
 
 In the previous experiment we evaluated the different embeddings with respect to metadata associated with each book.
 To evaluate the facets more directly, we created the BoCo dataset containing manual book similarity annotations with respect to different aspects.
-Each expert rated which two books out of a set of three books are more similar to each other with respect to when and where the story is set (time, location), as well as their plot, atmosphere, content and overall (total) similarity.
+Each expert rated which two books out of a set of three books are more similar to each other with respect to when and where the story is set (time, location), as well as their plotand atmosphere similarity.
 Each triplet has multiple annotations and we use the majority vote in cases where the annotators disagreed.
 
 Table~\ref{tab:book_comparison_baselines_strict} lists the precision of different models regarding the agreement with human annotators.
@@ -733,17 +746,17 @@ For \emph{lib2vec}, we use facet embeddings where applicable.
 Surprisingly, traditional embeddings and even bag-of-words are able to beat state-of-the-art transformer model P-SIF, which was especially designed for long texts.
 Overall, BERT and \emph{lib2vec} perform best and yield very similar results across all facets.
 
-\subsection{Document Classification}
+\subsection{Book Classification}
 
-\begin{table}
+\begin{table}[tb]
 	\centering 
-	\caption{Weighted F1 scores for classification of high-rated books and genres using RBF-based SVM on different book embeddings on MGG. The largest values are highlighted in bold. Italic values were taken from the corresponding publications.}
+	\caption{Book Classification: Weighted F1-scores for classification of high-rated books and genres using RBF-based SVM on different book embeddings on MGG. The largest values are highlighted in bold. Italic values were taken from the corresponding publications.}
 	\label{tab:down_stream_eval_f1}
 	\begin{tabular}{lrr}
 		\toprule
 		Algorithm                        &        Rating &         Genre \\ \midrule
 		\citet{maharjan_multi-task_2017} & \textit{0.72} &            -- \\
-		\citet{khalifa_will_2020}        & \textit{0.72} &            -- \\ \midrule
+		\citet{khalifa_will_2020}        & \textit{0.72} &            -- \\ 
 		BoW                              &          0.61 &          0.19 \\
 		AVG W2V                          &          0.70 &          0.59 \\
 		doc2vec                          &          0.71 &          0.56 \\
@@ -752,8 +765,8 @@ Overall, BERT and \emph{lib2vec} perform best and yield very similar results acr
 		XLM                              &          0.71 &          0.47 \\
 		P-SIF                            &          0.70 &          0.55 \\
 		\emph{lib2vec} AVG               &          0.72 &          0.63 \\ 
-		\emph{lib2vec} CON               & \textbf{0.76} & \textbf{0.89} \\
-		\emph{lib2vec} PCA               &          0.69 &          0.56 \\ \bottomrule
+		\emph{lib2vec} CON               & \textbf{0.76} & \textbf{0.89} \\ \bottomrule
+	%	\emph{lib2vec} PCA               &          0.69 &          0.56 \\ \bottomrule
 	\end{tabular}
 \end{table}
 
