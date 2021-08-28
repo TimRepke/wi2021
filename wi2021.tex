@@ -384,7 +384,7 @@ Topic modelling has been shown to be useful for analyzing literary texts~\citep{
 Due to its high computational costs, we only include this facet for the book comparison task (Section~\ref{ssec:bookComparisons}.
 We trained an LDA~\citep{blei2003latent} topic model on the input corpus and set the number of topics to 15.
 Afterwards, we use the top 100 associated words of the five most relevant topics of a book according to the inferred topic distribution.
-Given that topic modelling plays only a minor part in \emph{lib2vec} we treat it as a black box and defer furhter analysis to future work.
+Given that topic modelling plays only a minor part in \emph{lib2vec} we treat it as a black box and defer further analysis to future work.
 
 \paragraph{Raw.}
 In addition, we also include a full-text facet containing the beginning of a book without any filtering apart from the truncation after the maximum sequence length.
@@ -457,8 +457,28 @@ In this section we provide an overview of which datasets we use for our evaluati
 	\end{tabular}
 \end{table}
 
+\begin{table}
+	\centering
+	\caption[Overview of Facet Coverage]{Overview of average facet coverage values}
+	\label{tab:facet_stats}
+\begin{tabular}{crrrr}
+	\toprule
+	Facet &    CGF &    DTA &    MGG &   BoCo \\
+	\midrule
+	Atmosphere &  0.144 &  0.142 &  0.106 &  0.110 \\
+	Location   &  0.012 &  0.015 &  0.006 &  0.004 \\
+	Plot       &  0.183 &  0.179 &  0.167 &  0.184 \\
+	Raw        &  1.000 &  1.000 &  1.000 &  1.000 \\
+	Style      &  0.479 &  0.465 &  0.470 &  0.505 \\
+	Time       &  0.007 &  0.006 &  0.010 &  0.009 \\
+	\bottomrule
+\end{tabular}
+\end{table}
+
 Key characteristics of the datasets used are provided in Table~\ref{tab:datasets_overview}.
 The median is reported for the average number of (unique) words per book and the mean for the average number of books per author.
+An overview of the average coverage for each facet is provided in Table~\ref{tab:facet_stats}.
+The average coverage is calculated by averaging the ratio of facet tokens and the number of total tokens per document over the corresponding corpus. 
 
 \paragraph{Corpus of German-Language Fiction (CGF).}
 The Corpus of German Fiction by~\citet{fischer_corpus_2017} consists of \numprint{3219} German prose books published between 1840 and 1930.
@@ -503,12 +523,12 @@ Although this significantly reduces the size of the overall vocabulary, document
 We compare \emph{lib2vec} to various traditional and state-of-the-art baselines.
 As the most simple baseline, we choose a bag-of-words (BoW) representation limited to a vocabulary size of \numprint{30000} words.
 Furthermore, we use standard word2vec embeddings trained on each corpus.
-We calculate the arithmetic mean of all words in a book to get a single vector representation for the book.
+We calculate the arithmetic mean of all words embeddings in a book to get a single vector representation for the entire book.
 In addition, we compute representations of books using doc2vec~\cite{le_distributed_2014}.
 Preliminary experiments with pre-training the doc2vec model yielded worse results, therefore we train the doc2vec model on each corpus seperately.
 We also use more recently published models, namely BERT~\citep{devlin_bert_2019}, RoBERTa~\citep{liu2019roberta}, XLM~\citep{conneau2019cross}, fine-tuned for sentence representation by SentenceTransformers~\citep{reimers-2019-sentence-bert}.
 These approaches are limited by the maximum sequence length, however \citet{khalifa_will_2020} have shown that the first 1,000 sentences can be sufficient to encode books.
-Additionally, we use the partitioned word averaging model P-SIF~\citep{gupta_p-sif_2020} as a state-of-the-art document embedding algorithm which is designed partiularly for long documents.
+Additionally, we use the partitioned word averaging model P-SIF~\citep{gupta_p-sif_2020} as a state-of-the-art document embedding algorithm which is designed particularly for long documents.
 
 \section{Evaluation}
 
@@ -679,7 +699,7 @@ The classifier using our \emph{lib2vec} embedding is able to outperform all base
 \end{figure*}
 
 We also performed an extensive qualitative evaluation of the \emph{lib2vec} model with respect to aggregated representation and individual facet embeddings in collaboration with domain experts from literary sciences.
-Figure~\ref{fig:plot_genres_multi_multi_column} depicts a UMAP visualization of the embedding space of the plot facet for the MGG corpus. The different colors indicate the genre of the novels.
+Figure~\ref{fig:plot_genres_multi_column} depicts a UMAP visualization of the embedding space of the plot facet for the MGG corpus. The different colors indicate the genre of the novels.
 Note that the plots of the detective stories is scattered across multiple genre clusters and that,e.g., historical fiction has some overlap with love stories.
 
 
