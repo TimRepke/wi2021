@@ -511,7 +511,8 @@ In total, we were able to gather ratings on 527 triplets with an moderate annota
 
 In preliminary experiments we saw a significant correlation between the length of a texts and the similarity score for doc2vec and average word2vec representations.
 Our \emph{lib2vec} approach was far less affected by the length of books.
-Nevertheless, to allow for a fair comparison between approaches, we run all experiments with books of comparable length to exclude length as a distinguishing feature.
+Nevertheless, to allow for a fair comparison between approaches, we run all experiments with books of comparable length.
+To exclude length as a distinguishing feature books are divided into three categories: short, medium, and large, with threshold values determined by quantiles of $0.33$ and $0.66$ of the token counts.
 
 For experiments on identifying series of books or books by the same author, we remove words that may provide a clear distinction.
 For example, character names of a sequel may not appear in other books and thus render identifying books of the same series a trivial task.
@@ -529,6 +530,82 @@ Preliminary experiments with pre-training the doc2vec model yielded worse result
 We also use more recently published models, namely BERT~\citep{devlin_bert_2019}, RoBERTa~\citep{liu2019roberta}, XLM~\citep{conneau2019cross}, fine-tuned for sentence representation by SentenceTransformers~\citep{reimers-2019-sentence-bert}.
 These approaches are limited by the maximum sequence length, however \citet{khalifa_will_2020} have shown that the first 1,000 sentences can be sufficient to encode books.
 Additionally, we use the partitioned word averaging model P-SIF~\citep{gupta_p-sif_2020} as a state-of-the-art document embedding algorithm which is designed particularly for long documents.
+
+\subsection{Hyper-Parameters}
+%\begin{figure}
+%	\centering
+%	\includegraphics[width=\linewidth]{figures/dimension_performance}
+%	\caption{doc2vec performance of finding books by the same author or book series in the top-\textit{100} neighborhood.
+%		The performance of doc2vec is measured in NDCG, precision, recall, and F1 scores for dimension values of  $50, 100, 300, 500, 700, 900$ with a fixed window of $10$ on the CGF dataset.}
+%	\label{fig:dimension_performance}
+%\end{figure}
+%
+%\begin{figure}
+%	\centering
+%	\includegraphics[width=\linewidth]{figures/doc_window_performance}
+%	\caption{doc2vec performance of finding  books by the same author or book series in the top-\textit{100} neighborhood.
+%		The performance of doc2vec is measured in NDCG, precision, recall, and F1 scores for window sizes of $1, 2, 3, 4, 5, 7, 10, 15$ with a fixed dimension size of $300$ on the CGF dataset.}
+%	\label{fig:doc_window_performance}
+%\end{figure}
+The \emph{lib2vec} embeddings are trained using the Gensim~\citep{rehurek_lrec} implementation of doc2vec.
+The following hyperparameters are chosen for the trained embeddings by manual tuning:
+An embedding dimension of $300$ is considered because this is a common choice for word and document embeddings~\citep{rettig_fusing_2019}.
+Besides, a preliminary experiment was performed with different dimension sizes for doc2vec on the CGF dataset.
+The result confirms, that a dimension size of $300$ is the smallest but best performing choice for book similarity tasks.
+A similar preliminary experiment was performed to obtain a good choice for the window size which resulted in a size of $5$.
+This value is also suggested by~\citet{grayson_novel2vec_2016} for semantic relationships.
+Each model is trained for $20$ epochs. 
+%To reduce the configurable parameters, the minimal counter for words is set to $0$, which means no words are excluded by their frequency.
+All non-deterministic implementation options such as the usage of multiple workers are disabled.
+%The number of workers for the doc2vec embedding algorithm is set to $1$, the seed of the model is set to $42$.
+For the other options the default values are preserved.
+No pre-trained models or further hyperparameter optimization are involved to make results comparable.
+The same hyper-parameter setup is used for all baselines.
+%The default embeddings of \emph{lib2vec} truncate pseudo-documents that exceed a limit of \numprint{10000}.
+All experiments are executed on a Windows midrange machine with 16 GB RAM and 48 GB swap partition, an AMD Ryzen 5 3600 CPU with 12 cores, and no GPU.
+
+%\begin{table}[]
+%	\begin{tabular}{@{}lrr@{}}
+%		\toprule
+%		& Parameters & With \emph{lib2vec} \\ \midrule
+%		BoW 30K         & \numprint{3000}
+%		M        & \numprint{3005} M                                     \\
+%		AVG W2V     & 30 M       & 35 M                                   \\
+%		doc2vec DM   & 30 M       & 35 M                                   \\
+%		doc2vec DBOW & 0.1 M      & 0.5 M                                  \\
+%		BERT         & *110 M      & *110 M                                  \\
+%		RoBERTa      & *125 M      & *125 M                                  \\
+%		XLM          & *110 M      & *110 M                                  \\
+%		P-SIF        & 30 M       & 35 M                                   \\ \bottomrule
+%	\end{tabular}
+%	\caption[]{Number of parameters for each model architecture on a corpus of \numprint{3000} novels and a vocabulary of \numprint{100000} words. *values taken from the description of the Hugging Face transformer library.}
+%	\label{tab:parameters}
+%\end{table}
+%
+%Table \ref{tab:parameters} highlights the number of parameters for various model architectures applied on \numprint{3000} novels with an assumed vocabulary size of \numprint{100000}. 
+%Besides, the values for the model architecture in combination with our \emph{lib2vec} framework are reported.
+%In most cases a dimension size of 300 is considered.
+%Exceptions are BoW where the dimension size is set to \numprint{30000} as well as BERT, RoBERTA, and XLM where the dimension size is dependent on the model.
+%While the amount of parameters for BERT, RoBERTa, and XLM are found in the description of the Hugging Face transformer library,\footnote{\url{https://huggingface.co/transformers/v2.2.0/pretrained_models.html}} other values are calculated by $N*f*d + V*d$, where $N$ denotes the number of novels, $f$ the number of facets, $d$ the dimensions, and $V$ the vocabulary size.
+
+%\begin{table}
+%	\centering
+%	\begin{tabular}{@{}lrrrr@{}}
+%		\toprule
+%		& BoCo & DTA & MGG & CGF  \\ \midrule
+%		BoW     & 1   & 21  & 2   & 95   \\
+%		AVG W2V & 7   & 49  & 23  & 1026 \\
+%		doc2vec & 8   & 47  & 22  & 248  \\
+%		BERT    & 23  & 205 & 28  & 880  \\
+%		RoBERTa & 56  & 230 & 32  & 1014 \\
+%		XLM     & 104 & 192 & 30  & 1006 \\
+%		P-SIF   & 2   & 17  & 6   & 95   \\
+%		\emph{lib2vec} & 1   & 13  & 20  & 438 \\
+%		\bottomrule
+%	\end{tabular}
+%	\caption[]{Runtime in minutes for training the models on the respective corpus on our desktop computer.}
+%	\label{tab:runtimes}
+%\end{table}
 
 \section{Evaluation}
 
