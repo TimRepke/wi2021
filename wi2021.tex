@@ -16,7 +16,7 @@
 
 
 
-
+\usepackage{subcaption}
 \usepackage{numprint}
 \npthousandsep{\,}
 
@@ -641,7 +641,7 @@ In constrast to models such as BERT, which need to be trained on millions of tok
 
 \begin{table}[b]
 	\centering
-	\caption{Book Similarity: Precision@k for author, series, and genre task using cosine similarities of different embedding models. Scores closest to upper bound are highlighted in bold.}
+	\caption{Book Similarity: Precision@10 for author, series, and genre task using cosine similarities of different embedding models. Scores closest to upper bound are highlighted in bold.}
 	\label{tab:sim}
 	\begin{tabular}{lcccccc}
 		\toprule
@@ -689,6 +689,39 @@ Note that not all datasets have series or genre annotations and are therefore ex
 Given that we do not have 10 positive examples for all tasks and classes, we also report the upper bound of maximal achievable precision@10.
 Our \emph{lib2vec} embedding consistently performs best and significantly outperforms state-of-the-art embeddings as well as traditional vector representations.
 For the genre classification task, we use the MGG corpus (the others don't contain genre annotations).
+
+
+\subsection{Ablation Study}
+\begin{figure}
+	\centering
+	\begin{subfigure}[t]{\linewidth}
+		\centering
+		% trim=left bottom right top
+		\includegraphics[width=\linewidth,clip,trim={125 0 137 0}]{figures/cgf_ndcg_authortask.png}
+		\caption{Author Similarity NDCG}
+		\label{fig:abl_ndcg}
+	\end{subfigure}
+	
+	\begin{subfigure}[t]{\linewidth}
+		\centering
+		\includegraphics[width=\linewidth,clip,trim={125 0 137 0}]{figures/cgf_prec10_authortask.png}
+		\caption{Author Similarity Precision@10}
+		\label{fig:abl_prec}
+	\end{subfigure}
+	\caption{Results for identifying authors in the book similarity task using only single facets or removing facets.}
+	\label{fig:ablation}
+\end{figure}
+
+In order to quantify the importance of each facet in our book similarity experiment, we carried out an ablation study on all three datasets.
+We use the same experimental setup as described in the previous section and measure precision@10 as well as the NDCG score.
+Results for the book similarity task for authors are shown in Figure~\ref{fig:ablation}.
+Here, instead of using all facets, we either use only one (blue) or all but one (orange) facet.
+Horizontal red lines indicate the respective score when using all facets, vertical lines are error bars based on repeated runs.
+Our results show, that the location and time facets have the least influence on author similarities.
+As expected, the style facet on its own is a strong identifier for authors, while removing the atmosphere facet has the most negative effect.
+The plot facet on its own also performs well, however removing it leads to slight improvements.
+There are no statistically relevant conclusions on the influence of the raw facet.
+Although some scores with only one facet (or one facet left out) show are better than using all facets, using all available information generally leads to more robust results.
 
 \subsection{Book Comparison}\label{ssec:bookComparisons}
 
@@ -778,6 +811,7 @@ It contains \numprint{3458} full-texts of English books written by \numprint{110
 Table~\ref{tab:down_stream_eval_f1} shows the classification performance for rating and genre prediction.
 The classifier using our \emph{lib2vec} embedding is able to outperform all baselines as well as the approaches from related work which are especially tailored toward this task.
 %Besides, we repeated the task with the available genre labels and outperformed all baselines.
+
 
 \subsection{Qualitative Evaluation}
 
