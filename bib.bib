@@ -6,7 +6,7 @@
 @String{ACM            = "{ACM}" }
 @String{ACM-ADDR       = "New York City, NY, USA" }
 @String{ACLPub         = "{ACL}" }
-@String{ACLPub-ADDR    = "Stroudsburg, PA, USA" }
+@String{ACLPub-ADDR    = "USA" }
 @String{AdamHilger     = "Adam Hilger" }
 @String{AddisonWesley  = "Addison-Wesley" }
 @String{AAAIPub        = "AAAI" }
@@ -46,7 +46,7 @@
 @String{PMLR-ADDR      = "Brookline, USA" }
 @String{PrenticeHall   = "Prentice-Hall" }
 @String{SAGE           = "SAGE Publications" }
-@String{SAGE-ADDR      = "London, England" }
+@String{SAGE-ADDR      = "London, UK" }
 @String{SIAM           = "{SIAM} Publications" }
 @String{SIAM-ADDR      = "Philadelphia, USA" }
 @String{Springer       = "Springer-Verlag" }
@@ -85,14 +85,14 @@
 @String { CHI           = {Proceedings of the SIGCHI Conference on Human Factors in Computing Systems (CHI)} }
 @String { CHIIR         = {Proceedings of the Conference for Human Information Interaction and Retrieval (CHIIR) }}
 @String { CIDR          = {Proceedings of the Conference on Innovative Data Systems Research (CIDR)} }
-@String { CIKM          = {Proceedings of the International Conference on Information and Knowledge Management (CIKM)} }
-@String { COLING = {Proceedings of the International Conference on Computational Linguistics (COLING)} }
+@String { CIKM          = {Proc. of the Intl. Conference on Information and Knowledge Management (CIKM)} }
+@String { COLING = {Proc. of the Intl. Conference on Computational Linguistics (COLING)} }
 @String { COMAD         = {Proceedings of the International Conference on Management of Data (COMAD)} }
 @String { COOPIS        = {Proceedings of the International Conference on Cooperative Information Systems (CoopIS)} }
 @String { CoRR          = {Computing Research Repository (CoRR)} }
 @String { CSUR          = {ACM Computing Surveys} }
 
-@String { DASFAA        = {Proceedings of the International Conference on Database Systems for Advanced Applications (DASFAA)} }
+@String { DASFAA        = {Proc. of the Intl. Conference on Database Systems for Advanced Applications (DASFAA)} }
 @String { DBISP2P       = {Proceedings of the International Workshop on Databases, Information Systems and Peer-to-Peer Computing (DBISP2P)} }
 @String { DBPL          = {Proceedings of the International Workshop on Database Programming Languages} }
 @String { DBSPEKTRUM    = {Datenbank Spektrum} }
@@ -129,7 +129,7 @@
 @String { ICDE          = {Proceedings of the International Conference on Data Engineering (ICDE)} }
 @String { ICDT          = {Proceedings of the International Conference on Database Theory (ICDT)} }
 @String { ICDM          = {Proceedings of the International Conference on Data Mining (ICDM)} }
-@String { ICLR          = {Proceedings of the International Conference on Learning Representations (ICLR)} }
+@String { ICLR          = {Proc. of the Intl. Conference on Learning Representations (ICLR)} }
 @String { ICML          = {Proceedings of the International Conference on Machine Learning (ICML)} }
 @String { IDEAS         = {Proceedings of the International Database Engineering and Applications Symposium (IDEAS)} }
 @String { IIS           = {Journal of Intelligent Information Systems} }
@@ -283,6 +283,17 @@
 	address = IEEE-ADDR,
 }
 
+@inproceedings{risch_multi_2021,
+  author    = {Julian Risch and Philipp Hager and Ralf Krestel},
+  title     = {Multifaceted Domain-Specific Document Embeddings},
+  booktitle = {Proceedings of the Conference of the North American Chapter of
+               the ACL: Demonstrations (NAACL)},
+  pages     = {78--83},
+  publisher = ACL,
+  address = ACL-ADDR,
+  year      = {2021}
+}
+
 @inproceedings{risch_book_2018,
 	title = {Book {Recommendation} {Beyond} the {Usual} {Suspects}},
 	author={Risch, Julian and Garda, Samuele and Krestel, Ralf},
@@ -290,8 +301,7 @@
 	pages={227--239},
 	year={2018},
 	publisher= Springer,
-	address = Springer-ADDR,
-	doi       = {10.1007/978-3-030-04257-8\_24}
+	address = Springer-ADDR
 }
 
 @inproceedings{mounika_design_2020,
@@ -311,7 +321,7 @@
 	volume={14},
 	DOI={10.1561/1500000066},
 	number={1},
-	booktitle={Foundations and Trends® in Information Retrieval},
+	booktitle={Foundations and Trends in Information Retrieval},
 	publisher={Now Publishers},
 	address={Boston, MA, USA},
 	author={Zhang, Yongfeng and Chen, Xu},
@@ -699,7 +709,6 @@
 @inproceedings{vaz_improving_2012,
 	address = ACM-ADDR,
 	title = {Improving a {Hybrid} {Literary} {Book} {Recommendation} {System} through {Author} Ranking},
-	doi = {10.1145/2232817.2232904},
 	booktitle = JCDL,
 	publisher = ACM,
 	author = {Vaz, Paula Cristina and Martins de Matos, David and Martins, Bruno and Calado, Pavel},
@@ -798,7 +807,6 @@
 @inproceedings{vaz_improving_2012-1,
 	address = ACM-ADDR,
 	title = {Improving a {Hybrid} {Literary} {Book} {Recommendation} {System} through {Author} {Ranking}},
-	doi = {10.1145/2232817.2232904},
 	booktitle = JCDL,
 	publisher = ACM,
 	author = {Vaz, Paula Cristina and Martins de Matos, David and Martins, Bruno and Calado, Pavel},
@@ -836,10 +844,9 @@
 @inproceedings{vaz_litrec_2012,
 	address = {Setúbal, Portugal},
 	title = {{LitRec} vs. {Movielens} - {A} {Comparative} {Study}:},
-	doi = {10.5220/0004145003700373},
 	booktitle = {Proceedings of the {International} {Conference} on {Knowledge} {Discovery} and {Information} {Retrieval} (KDIR)},
 	publisher = {SciTePress},
-	author = {Vaz, Paula Cristina},
+	author = {\citet{risch_book_2018}, Paula Cristina},
 	year = {2012},
 	pages = {370--373},
 }
@@ -959,8 +966,7 @@
 	pages={24--54},
 	year={2010},
 	publisher=SAGE,
-	address=SAGE-ADDR,
-	doi={10.1177/0261927X09351676}
+	address=SAGE-ADDR
 }
 
 @inproceedings{pera_analyzing_2015,
@@ -1282,8 +1288,7 @@
 	publisher = ACLPub,
 	address= ACLPub-ADDR,
 	year={2018},
-	pages     = {4171--4186},
-	doi       = {10.18653/v1/n19-1423}
+	pages     = {4171--4186}
 }
 
 @inproceedings{akbik_contextual_2018,
@@ -1362,7 +1367,7 @@
 }
 
 @inproceedings{bogers_what_2018,
-	title = {`{What} was this {Movie} {About} this {Chick}?'},
+	title = {`{What} was this {Movie} {About} this {Chick}?'},
 	doi = {10.1007/978-3-319-78105-1_36},
 	booktitle = {Transforming {Digital} {Worlds}},
 	publisher= Springer,
@@ -1418,8 +1423,7 @@
 	pages={139--160},
 	year={2018},
 	publisher= Springer,
-	address = Springer-ADDR,
-	doi       = {10.1007/s10844-017-0489-9}
+	address = Springer-ADDR
 }
 
 @inproceedings{dam_literature_2020,
@@ -1605,7 +1609,6 @@
 @article{unnam_document_2020,
 	title = {A {Document} {Representation} {Framework} with {Interpretable} {Features} {Using} {Pre}-{Trained} {Word} {Embeddings}},
 	volume = {10},
-	doi = {10.1007/s41060-019-00200-5},
 	number = {1},
 	journal = {International Journal of Data Science and Analytics},
 	author = {Unnam, Narendra Babu and Reddy, P. Krishna},
@@ -2335,7 +2338,6 @@
 @inproceedings{neelakantan_efficient_2014,
 	address = ACLPub-ADDR,
 	title = {Efficient {Non}-{Parametric} {Estimation} of {Multiple} {Embeddings} per {Word} in {Vector} {Space}},
-	doi = {10.3115/v1/D14-1113},	
 	booktitle = EMNLP,
 	publisher = ACLPub,
 	author = {Neelakantan, Arvind and Shankar, Jeevan and Passos, Alexandre and McCallum, Andrew},
@@ -2506,8 +2508,7 @@
 	volume = {52},
 	number = {5},
 	pages = {1--40},
-	year = {2019},
-	doi       = {10.1145/3344548},
+	year = {2019}
 }
 
 @inproceedings{gao_multiscale_2016,
@@ -2889,9 +2890,9 @@ misc{fellbaum2010wordnet,
 	title     = {Generating Long Sequences with Sparse Transformers},
 	journal   = {arXiv preprint},
 	volume = {1904.10509},
-	year      = {2019},
-	pages={1--10}
+	year      = {2019}
 }
+
 @inproceedings{DBLP:conf/emnlp/QiuMLYW020,
 	author    = {Jiezhong Qiu and
 	Hao Ma and

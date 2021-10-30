@@ -26,16 +26,13 @@
 %% values in them; it is your responsibility as an author to replace
 %% the commands and values with those provided to you when you
 %% complete the rights form.
-\setcopyright{acmcopyright}
 \copyrightyear{2021}
 \acmYear{2021}
-\acmDOI{00.0000/0000000.0000000}
-
-%% These commands are for a PROCEEDINGS abstract or paper.
-\acmConference[WI-IAT '21]{Web Intelligence and Intelligent Agent Technology}{December 14--17, 2021}{Melbourne, Australia}
-\acmBooktitle{WI-IAT '21: Web Intelligence and Intelligent Agent Technology December 14--17, 2021, Melbourne, Australia}
-\acmPrice{15.00}
-\acmISBN{000-0-0000-0000-0}
+\setcopyright{rightsretained}
+\acmConference[WI-IAT '21]{IEEE/WIC/ACM International Conference on Web Intelligence}{December 14--17, 2021}{ESSENDON, VIC, Australia}
+\acmBooktitle{IEEE/WIC/ACM International Conference on Web Intelligence (WI-IAT '21), December 14--17, 2021, ESSENDON, VIC, Australia}
+\acmDOI{10.1145/3486622.3494006}
+\acmISBN{978-1-4503-9115-3/21/12}
 
 %%
 %% Submission ID.
@@ -86,10 +83,10 @@
 
 \author{Ralf Krestel}
 \orcid{0000-0002-5036-8589}
-\email{ralf.krestel@acm.org}
+\email{r.krestel@zbw.eu}
 \affiliation{%
-  \institution{ZBW Leibnitz Information Centre for Economics}
-  \country{Kiel University, Germany}}
+  \institution{ZBW Leibniz Information Centre for Economics \& Kiel University}
+  \country{Germany}}
 
 
 %%
@@ -163,14 +160,14 @@ The results show that our approach outperforms state-of-the-art document embeddi
 
 \section{Introduction}
 
-Reading is one of the main strategies to obtain new information.
-However, the availability and the amount of information are continuously growing.
-This is not only the case for user-generated content, scientific papers, or news, but also for books~\citep{roser_books_2013, fink-jensen_book_2015}.
-For example, in 2019, \numprint{78746} new books were published in Germany~\citep{lippmann_buchproduktion_2019} and \numprint{1600000} books were self-published in the USA in 2018~\citep{bowker_self-publishing_2019}.
-These numbers clearly illustrate the so-called \textit{information overload problem}~\citep{wang_literature_2020, alharthi_survey_2018} which applies to book publishers and readers alike.
-Automatic methods can assist human decision making, for example, book publishers who have to select books from a large number of submitted manuscripts by judging whether they align with their program and potential commercial success~\cite{ashok_2013}.
+%Reading is one of the main strategies to obtain new information.
+%However, the availability and the amount of information are continuously growing.
+%This is not only the case for user-generated content, scientific papers, or news, but also for books~\citep{roser_books_2013, fink-jensen_book_2015}.
+%For example, in 2019, \numprint{78746} new books were published in Germany~\citep{lippmann_buchproduktion_2019} and \numprint{1600000} books were self-published in the USA in 2018~\citep{bowker_self-publishing_2019}.
+%These numbers clearly illustrate the so-called \textit{information overload problem}~\citep{wang_literature_2020, alharthi_survey_2018} which applies to book publishers and readers alike.
+%Automatic methods can assist human decision making, for example, book publishers who have to select books from a large number of submitted manuscripts by judging whether they align with their program and potential commercial success~\cite{ashok_2013}.
 
-Machine-understandable representations of books are the basis for such automated approaches.
+Machine-understandable representations of texts are the basis for many automated approaches.
 Numerical representations can be used to calculate similarities between books as well as for clustering, classification, or content-based recommender systems.
 Modern document embeddings are usually designed to encode shorter texts.
 For example BERT~\citep{devlin_bert_2019} is limited to \numprint{512} tokens, Longformer~\citep{beltagy_longformer_2020}, which is designed for long sequences, is limited to \numprint{4096} tokens, and doc2vec has a limit of \numprint{10000} while books may easily exceed \numprint{100000} tokens.
@@ -189,12 +186,12 @@ Our experiments show that \emph{lib2vec} is able to significantly outperform oth
 In addition, we evaluate our embedding on genre and rating prediction of novels.
 Furthermore, we introduce the \emph{BoCo} dataset with similarities between 20 books under different aspects annotated by \numprint{81} domain experts.
 
-Our contributions are:
-(1) We present \emph{lib2vec}, a framework which computes and combines multiple embedding vectors based on various facets. Instead of splitting the text sequentially, \emph{lib2vec} splits the text semantically based on domain-specific facets.
-(2) \emph{lib2vec} provides memory and time-efficient computation of embedding vectors for long texts.
-(3) \emph{lib2vec} allows the comparison of books with respect to different facets.
-(4) We compare \emph{lib2vec} to competitive baselines in a wide range of experiments.
-(5) We introduce a new benchmark dataset to evaluate book similarities.
+%Our contributions are:
+%(1) We present \emph{lib2vec}, a framework which computes and combines multiple embedding vectors based on various facets. Instead of splitting the text sequentially, \emph{lib2vec} splits the text semantically based on domain-specific facets.
+%(2) \emph{lib2vec} provides memory and time-efficient computation of embedding vectors for long texts.
+%(3) \emph{lib2vec} allows the comparison of books with respect to different facets.
+%(4) We compare \emph{lib2vec} to competitive baselines in a wide range of experiments.
+%(5) We introduce a new benchmark dataset to evaluate book similarities.
 
 \section{Related Work}
 
@@ -238,42 +235,42 @@ We show that by embedding multiple facets our approach addresses these issues as
 %The authors utilize the \textit{Word Mover's Distance} by~\citet{kusner2015word} which measures the distance of documents by the distance of word embeddings in that documents.
 %The document embedding is calculated by the smallest distance that the embedded words of one document must ``travel'' to reach the embedded words of another document~\citep{wu_word_2018}.
 
-Multi-view learning or multi-faceted embeddings refer to the same family of approaches and are often motivated by the polysemy of words~\citep{neelakantan_efficient_2014}.
+Multi-view learning or multi-faceted embeddings refer to the same family of approaches and are often motivated by the polysemy of words~\citep{neelakantan_efficient_2014} or domain-specific aspects~\citep{risch_multi_2021}.
 Multi-faceted text embeddings often use different data sources.
 These different data sources are, e.g., utilized to achieve a higher quality for general word embeddings~\citep{luo_pre-trained_2014} or domain-specific word embeddings~\citep{rettig_fusing_2019}.
 Thereby, embeddings of the same word based on different data sources serve as independent facets.
-The facets are combined by dimensionality reduction based on neural networks~\citep{luo_pre-trained_2014} or PCA~\citep{rettig_fusing_2019}.
-Nevertheless, a minority of works create facets from the same data source.
-In this area,~\citet{neelakantan_efficient_2014} train embeddings that capture the polysemy of words.
-Starting with the word to be embedded, the authors cluster the surrounding context words into word sense clusters.
-Afterward, they embed each of the sense clusters separately to form the different facets.
-Very similarly, \emph{lib2vec} uses the same text data to form different facets.
-However, instead of word embeddings, \emph{lib2vec} calculates document embeddings, and instead of word context clustering to obtain sets of words, it selects words by leveraging annotations such as part-of-speech tags.
+%The facets are combined by dimensionality reduction based on neural networks~\citep{luo_pre-trained_2014} or PCA~\citep{rettig_fusing_2019}.
+%Nevertheless, a minority of works create facets from the same data source.
+%In this area,~\citet{neelakantan_efficient_2014} train embeddings that capture the polysemy of words.
+%Starting with the word to be embedded, the authors cluster the surrounding context words into word sense clusters.
+%Afterward, they embed each of the sense clusters separately to form the different facets.
+%Very similarly, \emph{lib2vec} uses the same text data to form different facets.
+%However, instead of word embeddings, \emph{lib2vec} calculates document embeddings, and instead of word context clustering to obtain sets of words, it selects words by leveraging annotations such as part-of-speech tags.
 
-To create different facets of documents, other information such as click or interaction data can be used in addition to text data~\citep{sang_multi-modal_2019,li_multi-view_2019}.
-Thus, most text-related multi-faceted embeddings leverage facets based on auxiliary data apart from \citet{risch_book_2018}.
-To encode book synopses, they embed three different facets: time, place, and plot.
+%To create different facets of documents, other information such as click or interaction data can be used in addition to text data~\citep{sang_multi-modal_2019,li_multi-view_2019}.
+%Thus, most text-related multi-faceted embeddings leverage facets based on auxiliary data apart from \citet{risch_book_2018}.
+To encode book synopses, \citet{risch_book_2018} embed three different facets: time, place, and plot.
 While for the time embedding they trained a classifier that assigns a year to each synopsis, for the location they average the word embeddings of all location words. 
 Only the representation of the plot is obtained by doc2vec.
 In contrast, \emph{lib2vec} computes all facet embeddings in a unified way, using one and the same document embedding algorithm, e.g., doc2vec.
-Instead of having to train an additional classifier or use other external information, the information contained in the text is leveraged. 
-Thus, new facets can be constructed with less effort.
-Another difference to \citet{risch_book_2018} is the selected data, as synopses are much shorter than novels and provide other possibilities for facets.
+%Instead of having to train an additional classifier or use other external information, the information contained in the text is leveraged. 
+%Thus, new facets can be constructed with less effort.
+%Another difference to \citet{risch_book_2018} is the selected data, as synopses are much shorter than novels and provide other possibilities for facets.
 
-Besides multi-faceted embeddings, there are other ways to encode novels.
-Many of these approaches are based on hand-crafted features such as readability~\citep{pera_what_2013}, stylometric features for authorship attribution~\citep{alharthi_authorship_2018}, as well as token/type ratios, word frequencies, or the number of female characters within a text~\citep{alharthi_study_2019}.
-A disadvantage of hand-crafted features is that they are often very domain-specific and are difficult to transfer to other scenarios.
-In contrast to hand-crafted features, \emph{lib2vec} generates different facets in an unsupervised manner, based on annotations. 
-While they are also not domain-independent, they can be customized with less effort, as only relevant annotations need to be identified.
+%Besides multi-faceted embeddings, there are other ways to encode novels.
+%Many of these approaches are based on hand-crafted features such as readability~\citep{pera_what_2013}, stylometric features for authorship attribution~\citep{alharthi_authorship_2018}, as well as token/type ratios, word frequencies, or the number of female characters within a text~\citep{alharthi_study_2019}.
+%A disadvantage of hand-crafted features is that they are often very domain-specific and are difficult to transfer to other scenarios.
+%In contrast to hand-crafted features, \emph{lib2vec} generates different facets in an unsupervised manner, based on annotations. 
+%While they are also not domain-independent, they can be customized with less effort, as only relevant annotations need to be identified.
 
-\citet{maharjan_multi-task_2017} show that hand-crafted features such as character n-grams are often outperformed by neural-network-based approaches.
+\citet{maharjan_multi-task_2017} show that hand-crafted features to represent novels such as character n-grams are often outperformed by neural-network-based approaches.
 The authors obtain full-text representations of books based on various strategies, e.g., feature-based or based on document embeddings. % such as word-level features, such as bigrams and neural embeddings by pre-trained word embeddings, doc2vec, and an RNN.
 They created a Goodreads~\footnote{\url{https://www.goodreads.com/}} dataset which contains annotations for success, in form of ratings, and genre. 
 We use this dataset for testing rating and genre classification.
 To tackle the input sequence limit of document embedding algorithms, the authors represented each sentence as the average of its word embeddings and then fed chunks of 128 of these vectors into a multi-layer RNN to get a representation for the whole text as a result.
 In contrast, \emph{lib2vec} does not apply chunking, since it leads to a loss of information and therefore to poor quality of embeddings. %citation needed! or we need to include some numbers in the evaluation (maybe for CRV)
 The experiment by~\citet{maharjan_multi-task_2017} is adopted by~\citet{khalifa_will_2020}, who created book encodings by sentence embeddings incorporating readability scores.
-Again, our approach differs, because our strategy for dealing with long documents is less affected by the loss of information when different sentence embeddings are aggregated.
+%Again, our approach differs, because our strategy for dealing with long documents is less affected by the loss of information when different sentence embeddings are aggregated.
 
 %While~\citet{benton_learning_2016} obtain optimal weights for each facet by Canonical Correlation Analysis (CCA) for downstream tasks in the area of user classification and friend recommendation,~\citet{sang_multi-modal_2019} utilize a topic model to merge question pairs with network data, and~\citet{li_multi-view_2019} merge the results from different obtained facets to identify relevant emails.
 %Experiments showed that word embeddings can capture semantic relationships of book characters~\citep{grayson_novel2vec_2016} for a small corpus containing twelve books by three 19th century authors.
@@ -282,7 +279,7 @@ Again, our approach differs, because our strategy for dealing with long document
 
 \begin{figure}
 	\centering
-	\includegraphics[width=0.99\linewidth]{figures/approach_overview.pdf}
+	\includegraphics[width=0.75\linewidth]{figures/approach_overview.pdf}
 	\caption{Overview of processing steps of \emph{lib2vec}.}
 	\label{fig:overview}
 \end{figure}
@@ -364,7 +361,8 @@ Although this covers months, seasons, or year numbers, phrases referring to hist
 Thus, we again utilize  GermaNet or WordNet to extend the scope to include events and abstract time descriptors.
 
 \paragraph{Style.}
-Prior studies have shown correlations between authorship attribution, the style of a text, and the usage of stopwords~\citep{arun_stopword_2009, tausczik_psychological_2010, alharthi_authorship_2018}. 
+Prior studies have shown correlations between authorship attribution, the style of a text, and the usage of stopwords~\citep{arun_stopword_2009, tausczik_psychological_2010,
+alharthi_authorship_2018}. 
 Following these findings, we construct the style facet based on all stopwords found by a POS-tagger.
 Since stopwords appear very frequently, we expect this pseudo-document to grow quickly.
 Although this might be problematic considering sequence length limitations of embeddings, we assume that truncated stopwords are already present in the limited sequence and the potential loss of information is small.
@@ -434,28 +432,28 @@ In this section, we provide an overview of which datasets we use for our evaluat
 	\end{tabular}
 \end{table}
 
-\begin{table}
-	\centering
-	\caption[Overview of Facet Coverage]{Overview of Average Facet Coverage Values}
-	\label{tab:facet_stats}
-\begin{tabular}{crrrr}
-	\toprule
-	Facet &    CGF &    DTA &    MGG &   BoCo \\
-	\midrule
-	Location   &  0.012 &  0.015 &  0.006 &  0.004 \\
-	Time       &  0.007 &  0.006 &  0.010 &  0.009 \\
-	Style      &  0.479 &  0.465 &  0.470 &  0.505 \\
-	Atmosphere &  0.144 &  0.142 &  0.106 &  0.110 \\
-	Plot       &  0.183 &  0.179 &  0.167 &  0.184 \\
-	Raw        &  1.000 &  1.000 &  1.000 &  1.000 \\
-	\bottomrule
-\end{tabular}
-\end{table}
+%\begin{table}
+%	\centering
+%	\caption[Overview of Facet Coverage]{Overview of Average Facet Coverage Values}
+%	\label{tab:facet_stats}
+%\begin{tabular}{crrrr}
+%	\toprule
+%	Facet &    CGF &    DTA &    MGG &   BoCo \\
+%	\midrule
+%	Location   &  0.012 &  0.015 &  0.006 &  0.004 \\
+%	Time       &  0.007 &  0.006 &  0.010 &  0.009 \\
+%	Style      &  0.479 &  0.465 &  0.470 &  0.505 \\
+%	Atmosphere &  0.144 &  0.142 &  0.106 &  0.110 \\
+%	Plot       &  0.183 &  0.179 &  0.167 &  0.184 \\
+%	Raw        &  1.000 &  1.000 &  1.000 &  1.000 \\
+%	\bottomrule
+%\end{tabular}
+%\end{table}
 
 Key characteristics of the datasets used are provided in Table~\ref{tab:datasets_overview}.
 The median is reported for the average number of (unique) words per book and the mean for the average number of books per author.
-An overview of the average coverage for each facet is provided in Table~\ref{tab:facet_stats}.
-The average coverage is calculated by averaging the ratio of facet tokens and the number of total tokens per document over the corresponding corpus. 
+%An overview of the average coverage for each facet is provided in Table~\ref{tab:facet_stats}.
+%The average coverage is calculated by averaging the ratio of facet tokens and the number of total tokens per document over the corresponding corpus. 
 
 \paragraph{Corpus of German-Language Fiction (CGF)} The Corpus of German Fiction by~\citet{fischer_corpus_2017} consists of \numprint{3219} German prose books published between 1840 and 1930.
 %The vast majority of books (\numprint{2735}) were written by 549 German authors, the others are translated into German as they were originally published by 18 English, Russian, and French authors.
@@ -483,18 +481,18 @@ This dataset consists of 20 popular English books selected from Project Gutenber
 We conducted a survey with 81 participants who were asked to asses which two books in a triplet of books are more similar with regard to when and where they are set, as well as their atmosphere and plot. 
 In total, we were able to gather ratings on 527 triplets with a moderate annotator agreement of a Fleiss' Kappa Score of $0.55$.
 
-\subsection{Removal of Possible Biases}
-
-In preliminary experiments, we saw a significant correlation between the length of a text and the similarity score for doc2vec and average word2vec representations.
-Our \emph{lib2vec} approach was far less affected by the length of books.
-Nevertheless, to allow for a fair comparison between approaches, we run all experiments with books of comparable length.
-To exclude length as a distinguishing feature, books are divided into three categories: short, medium, and long, with threshold values determined by quantiles of $0.33$ and $0.66$ of the token counts.
-
-For experiments on identifying series of books or books by the same author, we remove words that may provide a clear distinction.
-For example, character names of a sequel may not appear in other books and thus render identifying books of the same series a trivial task.
-We do not explicitly identify character names in the text, but they are removed implicitly by filtering the vocabulary based on document frequency.
-We remove any words with a document frequency below a certain threshold defined for each dataset.
-Although this significantly reduces the size of the overall vocabulary, document length distributions are barely affected.
+%\subsection{Removal of Possible Biases}
+%
+%In preliminary experiments, we saw a significant correlation between the length of a text and the similarity score for doc2vec and average word2vec representations.
+%Our \emph{lib2vec} approach was far less affected by the length of books.
+%Nevertheless, to allow for a fair comparison between approaches, we run all experiments with books of comparable length.
+%To exclude length as a distinguishing feature, books are divided into three categories: short, medium, and long, with threshold values determined by quantiles of $0.33$ and $0.66$ of the token counts.
+%
+%For experiments on identifying series of books or books by the same author, we remove words that may provide a clear distinction.
+%For example, character names of a sequel may not appear in other books and thus render identifying books of the same series a trivial task.
+%We do not explicitly identify character names in the text, but they are removed implicitly by filtering the vocabulary based on document frequency.
+%We remove any words with a document frequency below a certain threshold defined for each dataset.
+%Although this significantly reduces the size of the overall vocabulary, document length distributions are barely affected.
 
 \subsection{Baselines}
 
@@ -542,11 +540,11 @@ For the other options, the default values are preserved.
 No pre-trained models or further hyperparameter optimization are involved to make results comparable.
 The same hyper-parameter setup is used for all baselines.
 %The default embeddings of \emph{lib2vec} truncate pseudo-documents that exceed a limit of \numprint{10000}.
-All experiments are executed on a Windows midrange machine with 16 GB RAM and 48 GB swap partition, an AMD Ryzen 5 3600 CPU with 12 cores, and no GPU.
-Table~\ref{tab:runtimes} shows the runtime in minutes each model needs for training/fine-tuning on the various corpora.
-Please note, that the large models, such as BERT, already come pre-trained.
-The time for this pre-training is not considered here.
-Nevertheless, \emph{lib2vec} is considerably faster compared to these large models.
+%All experiments are executed on a Windows midrange machine with 16 GB RAM and 48 GB swap partition, an AMD Ryzen 5 3600 CPU with 12 cores, and no GPU.
+%Table~\ref{tab:runtimes} shows the runtime in minutes each model needs for training/fine-tuning on the various corpora.
+%Please note, that the large models, such as BERT, already come pre-trained.
+%The time for this pre-training is not considered here.
+%Nevertheless, \emph{lib2vec} is considerably faster compared to these large models.
 
 %\begin{table}[]
 %	\begin{tabular}{@{}lrr@{}}
@@ -572,24 +570,24 @@ Nevertheless, \emph{lib2vec} is considerably faster compared to these large mode
 %Exceptions are BoW where the dimension size is set to \numprint{30000} as well as BERT, RoBERTA, and XLM where the dimension size is dependent on the model.
 %While the amount of parameters for BERT, RoBERTa, and XLM are found in the description of the Hugging Face transformer library,\footnote{\url{https://huggingface.co/transformers/v2.2.0/pretrained_models.html}} other values are calculated by $N*f*d + V*d$, where $N$ denotes the number of novels, $f$ the number of facets, $d$ the dimensions, and $V$ the vocabulary size.
 
-\begin{table}
-	\centering
-	\caption[]{Runtime in Minutes}
-	\label{tab:runtimes}
-	\begin{tabular}{@{}lrrrr@{}}
-		\toprule
-			& CGF & DTA & MGG & BoCo \\ \midrule
-		BoW     & 95  & 21  & 2   & 1    \\
-		AVG W2V & 1026& 49  & 23  & 7    \\
-		doc2vec & 248 & 47  & 22  & 8    \\
-		BERT    & 880 & 205 & 28  & 23   \\
-		RoBERTa & 1014& 230 & 32  & 56   \\
-		XLM     & 1006& 192 & 30  & 104  \\
-		P-SIF   & 95  & 17  & 6   & 2    \\
-	\emph{lib2vec}  & 438 & 13  & 20  & 1   \\
-		\bottomrule
-	\end{tabular}
-\end{table}
+%\begin{table}
+%	\centering
+%	\caption[]{Runtime in Minutes}
+%	\label{tab:runtimes}
+%	\begin{tabular}{@{}lrrrr@{}}
+%		\toprule
+%			& CGF & DTA & MGG & BoCo \\ \midrule
+%		BoW     & 95  & 21  & 2   & 1    \\
+%		AVG W2V & 1026& 49  & 23  & 7    \\
+%		doc2vec & 248 & 47  & 22  & 8    \\
+%		BERT    & 880 & 205 & 28  & 23   \\
+%		RoBERTa & 1014& 230 & 32  & 56   \\
+%		XLM     & 1006& 192 & 30  & 104  \\
+%		P-SIF   & 95  & 17  & 6   & 2    \\
+%	\emph{lib2vec}  & 438 & 13  & 20  & 1   \\
+%		\bottomrule
+%	\end{tabular}
+%\end{table}
 
 \section{Evaluation}
 
@@ -629,7 +627,7 @@ In contrast to models such as BERT, which need to be trained on millions of toke
 %	\label{tab:ndcg_multi}
 %\end{table*}
 
-\begin{table}[b]
+\begin{table}[t]
 	\centering
 	\caption{Book Similarity: Precision@10 for Author, Series, and Genre Prediction Task}
 	\label{tab:sim}
@@ -663,18 +661,18 @@ For the genre classification task, we use the MGG corpus (the others don't conta
 
 \subsection{Ablation Study}
 
-\begin{figure}
-	\centering
-		\includegraphics[width=\linewidth,clip,trim={125 0 137 0}]{figures/cgf_ndcg_authortask.png}
-	\caption{NDCG results for identifying authors in the book similarity task using only single facets or removing single facets.}
-	\label{fig:ablation}
-\end{figure}
+%\begin{figure}
+%	\centering
+%		\includegraphics[width=\linewidth,clip,trim={125 0 137 0}]{figures/cgf_ndcg_authortask.png}
+%	\caption{NDCG results for identifying authors in the book similarity task using only single facets or removing single facets.}
+%	\label{fig:ablation}
+%\end{figure}
 
 In order to quantify the importance of each facet in our book similarity experiment, we carried out an ablation study on all three datasets.
 We use the same experimental setup as described in the previous section and measure NDCG.
-Results for the book similarity task for authors are shown in Figure~\ref{fig:ablation}.
-Here, instead of using all facets, we either use only one (blue) or all but one (orange) facet.
-Horizontal red lines indicate the respective score when using all facets, vertical lines are error bars based on repeated runs.
+%Results for the book similarity task for authors are shown in Figure~\ref{fig:ablation}.
+%Here, instead of using all facets, we either use only one (blue) or all but one (orange) facet.
+%Horizontal red lines indicate the respective score when using all facets, vertical lines are error bars based on repeated runs.
 Our results show, that the location and time facets have the least influence on author similarities.
 As expected, the style facet on its own is a strong identifier for authors, while removing the atmosphere facet has the most negative effect.
 The plot facet on its own also performs well, however removing it does not hurt the the results since other facets seem to capture this information as well.
@@ -739,12 +737,12 @@ Overall, BERT and \emph{lib2vec} perform best and yield very similar results acr
 Also note that \emph{lib2vec} AVG outperforms \emph{lib2vec} CON only on th BoCo dataset.
 The reason could be that this is by far the smallest dataset with only 20 books.
 
-\begin{figure*}[h]
-	\centering
-	\includegraphics[width=\textwidth]{figures/plot_genres_multi_column.pdf}
-	\caption{UMAP projection of the facet \textit{plot} of \emph{lib2vec} trained on the MGG corpus.}
-	\label{fig:plot_genres_multi_column}
-\end{figure*}
+%\begin{figure*}[h]
+%	\centering
+%	\includegraphics[width=\textwidth]{figures/plot_genres_multi_column.pdf}
+%	\caption{UMAP projection of the facet \textit{plot} of \emph{lib2vec} trained on the MGG corpus.}
+%	\label{fig:plot_genres_multi_column}
+%\end{figure*}
 
 \subsection{Book Classification}\label{ssec:class}
 
@@ -783,14 +781,13 @@ The classifier using our \emph{lib2vec} embedding is able to outperform all clas
 More sophisticated classifiers on top of the different representations would probably perform better.
 We deliberately chose a rather simple SVM to focus on the effect that the different representations have on the classification results.
 
-\subsection{Qualitative Evaluation}
-
-
-We also performed an extensive qualitative evaluation of the \emph{lib2vec} model with respect to aggregated representation and individual facet embeddings in collaboration with domain experts from literary sciences.
-Figure~\ref{fig:plot_genres_multi_column} depicts a UMAP visualization of the embedding space of the ``plot''-facet for the MGG corpus. The different colors indicate the genre of the novels.
-Although the genre information was not given to the model as an input, the representations learned by \emph{lib2vec} for the ``plot''-facet reflect different genres remarkably well.
-Book plots from the same genre are embedded very close to each other as can be seen by the colors grouping nicely in Figure~\ref{fig:plot_genres_multi_column}.
-Note that the plots of the detective stories are scattered across multiple genre clusters and that, e.g., historical fiction has some overlap with love stories.
+%\subsection{Qualitative Evaluation}
+%
+%We also performed an extensive qualitative evaluation of the \emph{lib2vec} model with respect to aggregated representation and individual facet embeddings in collaboration with domain experts from literary sciences.
+%Figure~\ref{fig:plot_genres_multi_column} depicts a UMAP visualization of the embedding space of the ``plot''-facet for the MGG corpus. The different colors indicate the genre of the novels.
+%Although the genre information was not given to the model as an input, the representations learned by \emph{lib2vec} for the ``plot''-facet reflect different genres remarkably well.
+%Book plots from the same genre are embedded very close to each other as can be seen by the colors grouping nicely in Figure~\ref{fig:plot_genres_multi_column}.
+%Note that the plots of the detective stories are scattered across multiple genre clusters and that, e.g., historical fiction has some overlap with love stories.
 
 
 \section{Conclusions \& Future Work}
