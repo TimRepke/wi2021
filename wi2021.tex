@@ -69,7 +69,7 @@
 %% "authornote" and "authornotemark" commands
 %% used to denote shared contribution to the research.
 \author{Lasse Kohlmeyer}
-\email{lasse.kohlmeyer@student.hpi.de}
+\email{lasse.kohlmeyer@hpi-alumni.de}
 \affiliation{%
   \institution{Hasso Plattner Institute}
   \country{University of Potsdam, Germany}}
@@ -211,7 +211,7 @@ In contrast to \emph{book2vec}, \emph{lib2vec} is applied on the texts of novels
 %were introduced.
 %As opposed to traditional word embeddings, these methods do not produce a static vector for each word, but compute a representation for each word depending on its context.
 
-To utilize word embeddings in full-text applications, \citep{le_distributed_2014} introduced paragraph embeddings for short texts.
+To utilize word embeddings in full-text applications, \citet{le_distributed_2014} introduced paragraph embeddings for short texts.
 However, their input sequence is limited and longer texts need to be truncated, which leads to a loss of information and poor performance for long, heterogeneous texts.
 Modern, transformer-based document embedding algorithms have a much higher limit by utilizing an internal self-attention mechanism to capture contextual information of entire documents~\cite{DBLP:journals/corr/abs-1904-10509, DBLP:conf/emnlp/QiuMLYW020, DBLP:conf/iclr/KitaevKL20}.
 However, these models are typically task-specific and the attention mechanism has very high computation and memory requirements.
@@ -229,8 +229,9 @@ However, in contrast to our work, only topical information of a text is utilized
 Furthermore, {P-SIF} is evaluated on news articles or reviews that are much shorter than novels.
 
 Other downsides of existing document embedding approaches are the poor performance in classification tasks and the lack of interpretability of the latent vector space.
-Both are addressed by \citet{unnam_document_2020}, who utilize words with high discriminatory power as dimension features for the latent space of documents which improves classification performance and interpretability.
-We show that by embedding multiple facets our approach addresses these issues as well. %multiple vectors offer more possibilities for information encoding and more fine-grained semantic representations. 
+%Both are addressed by \citet{unnam_document_2020}, who utilize words with high discriminatory power as dimension features for the latent space of documents which improves classification performance and interpretability.
+We show that by embedding multiple facets our approach addresses these issues. 
+%as well. %multiple vectors offer more possibilities for information encoding and more fine-grained semantic representations. 
 %Alternative approaches of document embeddings include Word Mover's Embeddings~\citep{wu_word_2018}. 
 %The authors utilize the \textit{Word Mover's Distance} by~\citet{kusner2015word} which measures the distance of documents by the distance of word embeddings in that documents.
 %The document embedding is calculated by the smallest distance that the embedded words of one document must ``travel'' to reach the embedded words of another document~\citep{wu_word_2018}.
@@ -401,7 +402,7 @@ In the previous sections, we described the construction of pseudo-documents for 
 For practical reasons and in order to compare our approach to other document embedding methods, we need to combine the facet embeddings into a single vector.
 \citet{rettig_fusing_2019} cover a number of approaches of aggregating embedding vectors for their multi-faceted word embeddings.
 The na\"ive approach to combine facet embeddings is to use the arithmetic mean (AVG) or an element-wise sum of the individual vectors.
-\citet{gittens_skip-gram_2017} have empirically shown that the summation of word and document embeddings can retain aspects of two underlying embedding vectors.
+%\citet{gittens_skip-gram_2017} have empirically shown that the summation of word and document embeddings can retain aspects of two underlying embedding vectors.
 Another approach is to simply concatenate facet embedding vectors (CON).
 This has the advantage that facet embeddings can have a different dimensionality and the information captured by each facet is still available in the resulting vector.
 We also experimented with other dimensionality reduction methods, such as autoencoders and concatenation followed by principal component analysis, but results were worse compared to simple AVG and CON.
@@ -675,7 +676,7 @@ We use the same experimental setup as described in the previous section and meas
 %Horizontal red lines indicate the respective score when using all facets, vertical lines are error bars based on repeated runs.
 Our results show, that the location and time facets have the least influence on author similarities.
 As expected, the style facet on its own is a strong identifier for authors, while removing the atmosphere facet has the most negative effect.
-The plot facet on its own also performs well, however removing it does not hurt the the results since other facets seem to capture this information as well.
+The plot facet on its own also performs well, however removing it does not hurt the results since other facets seem to capture this information as well.
 There are no statistically relevant conclusions on the influence of the raw facet.
 Although some scores with only one facet (or one facet left out) are higher than using all facets, using all available information generally leads to more robust results.
 
@@ -776,7 +777,7 @@ We use the same binary classification setup as \citep{maharjan_multi-task_2017} 
 For a fair comparison, only the input representations are changed; the classifier and the training dataset is identical.
 We train an SVM with RBF-kernel on the LitRec dataset~\citep{vaz_litrec_2012} using the different representations.
 The dataset contains \numprint{3458} full-texts of English books written by \numprint{1109} authors from Project Gutenberg which were rated by \numprint{35507} users.
-Table~\ref{tab:down_stream_eval_f1} shows the classification performance for rating and genre prediction (The largest values are highlighted in bold; italic values were taken from the corresponding publications).
+Table~\ref{tab:down_stream_eval_f1} shows the classification performance for rating and genre prediction (the largest values are highlighted in bold; italic values were taken from the corresponding publications).
 The classifier using our \emph{lib2vec} embedding is able to outperform all classifiers using the baseline representations as well as the representations from related work, which are especially tailored toward this task.
 More sophisticated classifiers on top of the different representations would probably perform better.
 We deliberately chose a rather simple SVM to focus on the effect that the different representations have on the classification results.
